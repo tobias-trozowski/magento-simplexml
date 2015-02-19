@@ -1,0 +1,62 @@
+{
+    "name": "magento/simplexml",
+    "description": "Simplexml component from Magento",
+    "type": "library",
+    "keywords": [
+        "magento",
+        "simplexml",
+		"xml"
+    ],
+    "homepage": "https://github.com/tobias-trozowski/simplexml",
+    "license": "BSD-3-Clause",
+    "repositories": [
+        {
+            "type": "package",
+            "package": {
+                "name": "sebastianbergmann/phpcov",
+                "version": "1.1.0",
+                "dist": {
+                    "url": "https://github.com/sebastianbergmann/phpcov/archive/1.1.0.zip",
+                    "type": "zip"
+                },
+                "source": {
+                    "url": "https://github.com/sebastianbergmann/phpcov.git",
+                    "type": "git",
+                    "reference": "1.1.0"
+                },
+                "bin": [
+                    "phpcov.php"
+                ]
+            }
+        }
+    ],
+    "require": {
+        "php": ">=5.3.23",
+		"ext-simplexml": "*"
+    },
+    "require-dev": {
+        "fabpot/php-cs-fixer": "1.*",
+        "phpunit/PHPUnit": "3.7.*",
+        "sebastianbergmann/phpcov": "1.1.0"
+    },
+    "suggest": {
+        "ext-intl": "ext/intl for i18n features (included in default builds of PHP)",
+        "doctrine/annotations": "Doctrine Annotations >=1.0 for annotation features"
+    },
+    "autoload": {
+        "psr-0": {
+            "Magento\\": "library/"
+        }
+    },
+    "autoload-dev": {
+        "psr-0": {
+            "MagentoTest\\": "tests/"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.0.1-dev",
+            "dev-develop": "0.0.1-dev"
+        }
+    }
+}
