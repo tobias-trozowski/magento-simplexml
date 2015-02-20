@@ -36,8 +36,7 @@
     },
     "require-dev": {
         "fabpot/php-cs-fixer": "1.*",
-        "phpunit/PHPUnit": "3.7.*",
-        "sebastianbergmann/phpcov": "1.1.0"
+        "phpunit/PHPUnit": "3.7.*"
     },
     "suggest": {
         "ext-intl": "ext/intl for i18n features (included in default builds of PHP)",
