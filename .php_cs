@@ -30,4 +30,4 @@ return Symfony\CS\Config\Config::create()
         'multiline_spaces_before_semicolon',
         'ordered_use',
         'short_array_syntax',
-    ]);;
+    ]);
