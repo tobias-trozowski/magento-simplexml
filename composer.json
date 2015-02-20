@@ -52,6 +52,14 @@
             "MagentoTest\\": "tests/"
         }
     },
+    "scripts": {
+        "cs": [
+            "php-cs-fixer fix --config-file=./.php_cs --dry-run -v"
+        ],
+        "cs-fix": [
+            "php-cs-fixer fix --config-file=./.php_cs -v"
+        ]
+    },
     "extra": {
         "branch-alias": {
             "dev-master": "0.0.1-dev",
