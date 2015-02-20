@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Magento
+ * Magento.
  *
  * NOTICE OF LICENSE
  *
@@ -22,10 +22,11 @@
  * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
+
 namespace SirrusTest\Simplexml;
 
 /**
- * Short description for SirrusTest\Simplexml$ElementTest
+ * Short description for SirrusTest\Simplexml$ElementTest.
  *
  * Long description for SirrusTest\Simplexml$ElementTest
  *
@@ -33,12 +34,13 @@ namespace SirrusTest\Simplexml;
  *
  * @copyright Copyright (c) 2014 Sirrus Systems GmbH (http://www.sirrus-systems.de/)
  * @license   http://www.sirrus-systems.de/spf/license.html
+ *
  * @version   $Id$
+ *
  * @since     Class available since revision $Revision$
  */
 class ElementTest extends \PHPUnit_Framework_TestCase
 {
-
     public function unsetDataProvider()
     {
         // @formatter:off
@@ -50,24 +52,21 @@ class ElementTest extends \PHPUnit_Framework_TestCase
         // @formatter:off
     }
 
-
     /**
      * @dataProvider unsetDataProvider
      */
     public function testUnsetSelf($xml, $expectedXml, $child = null, $exceptionName = null, $exceptionMessage = '')
     {
-        /**
+        /*
          * @var $xml \Magento\Simplexml\Element
          */
         $el = simplexml_load_string($xml, 'Magento\Simplexml\Element');
 
         $this->setExpectedException($exceptionName, $exceptionMessage);
 
-        if ($child !== null)
-        {
+        if ($child !== null) {
             $el->{$child}->unsetSelf();
-        } else
-        {
+        } else {
             $el->unsetSelf();
         }
 
@@ -109,10 +108,10 @@ XML;
         $this->assertSame([
             'node' => [
                 '@' => [
-                    'testAttribute' => 'testValue'
+                    'testAttribute' => 'testValue',
                 ],
-                ''
-            ]
+                '',
+            ],
         ], $xml->asArray());
     }
 
@@ -124,8 +123,8 @@ XML;
         $xml = simplexml_load_string($data, 'Magento\Simplexml\Element');
         $this->assertSame([
             'node' => [
-                'node_1' => ''
-            ]
+                'node_1' => '',
+            ],
         ], $xml->asCanonicalArray());
     }
 
@@ -133,8 +132,7 @@ XML;
     {
         $dataFile = file_get_contents(__DIR__ . '/_files/mixed_data.xml');
         /**
-         *
-         * @var \Magento\Simplexml\Element $xml
+         * @var $xml \Magento\Simplexml\Element
          */
         $xml = simplexml_load_string($dataFile, 'Magento\Simplexml\Element');
 
@@ -157,13 +155,11 @@ XML;
     public function testAppendChild()
     {
         /**
-         *
-         * @var \Magento\Simplexml\Element $baseXml
+         * @var $xml \Magento\Simplexml\Element
          */
         $baseXml = simplexml_load_string('<root/>', 'Magento\Simplexml\Element');
         /**
-         *
-         * @var \Magento\Simplexml\Element $appendXml
+         * @var $xml \Magento\Simplexml\Element
          */
         $appendXml = simplexml_load_string('<node_a attr="abc"><node_b>text</node_b></node_a>', 'Magento\Simplexml\Element');
         $baseXml->appendChild($appendXml);
@@ -177,20 +173,19 @@ XML;
         $path = '/node1/node2';
         $value = 'value';
         /**
-         *
-         * @var \Magento\Simplexml\Element $xml
+         * @var $xml \Magento\Simplexml\Element
          */
         $xml = simplexml_load_string('<root/>', 'Magento\Simplexml\Element');
         $this->assertEmpty($xml->xpath('/root/node1/node2'));
         $xml->setNode($path, $value);
         $this->assertNotEmpty($xml->xpath('/root/node1/node2'));
-        $this->assertEquals($value, ( string )$xml->xpath('/root/node1/node2')[0]);
+        $this->assertEquals($value, (string) $xml->xpath('/root/node1/node2')[0]);
     }
 
     public function testExtend()
     {
         /**
-         * @var \Magento\Simplexml\Element $xml
+         * @var $xml \Magento\Simplexml\Element
          */
         $xml = simplexml_load_string('<root/>', 'Magento\Simplexml\Element');
         $xml2 = simplexml_load_string('<root><foo/><bar/><baz/></root>', 'Magento\Simplexml\Element');

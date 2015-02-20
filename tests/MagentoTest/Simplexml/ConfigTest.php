@@ -4,20 +4,20 @@
  * Copyright © 2015 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
+
 namespace MagentoTest\Simplexml;
+
 use Magento\Simplexml\Config;
 
 /**
- * Short description for MagentoTest\Simplexml$ConfigTest
+ * Short description for MagentoTest\Simplexml$ConfigTest.
  *
  * Long description for MagentoTest\Simplexml$ConfigTest
  *
  * @coversDefaultClass \Magento\Simplexml\Config
- *
  */
 class ConfigTest extends \PHPUnit_Framework_TestCase
 {
-
     public function constructorArgProvider()
     {
         // @formatter:off
@@ -38,29 +38,19 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstructor($stringOrFileOrElement)
     {
-
         $config = new Config($stringOrFileOrElement);
 
-        if (is_string($stringOrFileOrElement) && is_readable($stringOrFileOrElement))
-        {
+        if (is_string($stringOrFileOrElement) && is_readable($stringOrFileOrElement)) {
             $this->assertXmlStringEqualsXmlFile($stringOrFileOrElement, $config->getNode()
                 ->asXML());
-        }
-        else if (is_string($stringOrFileOrElement))
-        {
+        } elseif (is_string($stringOrFileOrElement)) {
             $this->assertXmlStringEqualsXmlString($stringOrFileOrElement, $config->getNode()
                 ->asXML());
-        }
-        else if (is_object($stringOrFileOrElement))
-        {
+        } elseif (is_object($stringOrFileOrElement)) {
             $this->assertSame($stringOrFileOrElement, $config->getNode());
-        }
-        else if ($stringOrFileOrElement === null)
-        {
+        } elseif ($stringOrFileOrElement === null) {
             $this->assertFalse($config->getNode());
-        }
-        else
-        {
+        } else {
             $this->fail('Unexpected test value.');
         }
     }
@@ -70,7 +60,6 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetXml()
     {
-
         $el = simplexml_load_string('<?xml version="1.0"?><config><node>1</node></config>', 'Magento\Simplexml\Element');
         $config = new Config();
         $config->setXml($el);
@@ -82,7 +71,6 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetNode()
     {
-
         $config = new Config();
         $this->assertFalse($config->getNode());
 
@@ -102,7 +90,7 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
 
         $config = new Config($el);
         $config->setNode('node', 'foo bar');
-        $this->assertSame('foo bar', (string)$config->getNode('node'));
+        $this->assertSame('foo bar', (string) $config->getNode('node'));
     }
 
     /**
@@ -110,7 +98,6 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
      */
     public function testLoadString()
     {
-
         $config = new Config();
         $xml = '<?xml version="1.0"?><config><node>1</node></config>';
         $this->assertFalse($config->loadString(''));
@@ -213,7 +200,6 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
      */
     public function testLoadFile()
     {
-
         $config = new Config();
         $this->assertFalse($config->loadFile(''));
         $this->assertTrue($config->loadFile(__DIR__ . '/_files/data.xml'));

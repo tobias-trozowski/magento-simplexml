@@ -1,14 +1,17 @@
 <?php
+
+/**
+ * Copyright © 2015 Tobias Trozowski. All rights reserved.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Magento\Simplexml\Exception;
 
 /**
  * Exception thrown if an argument is not of the expected type.
  *
- * @copyright Copyright (c) 2014 Sirrus Systems GmbH (http://www.sirrus-systems.de/)
- * @license http://www.sirrus-systems.de/spf/license.html
- * @version $Id$
  * @since Class available since revision $Revision$
- * @package Sirrus\Simplexml
  */
 class InvalidArgumentException extends \InvalidArgumentException implements ExceptionInterface
 {
