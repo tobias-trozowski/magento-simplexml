@@ -20,7 +20,7 @@ script:
   - php -d zend.enable_gc=0 ./vendor/bin/phpunit -c tests/phpunit.xml.dist --coverage-php build/coverage/coverage-{/.}.cov {};' || exit 1
 
   # Run coding standard checks in parallel
-  - ls -d library/Magento/* tests/Magento/* | parallel --gnu -P 0 'echo "Running {} CS checks"; php -d zend.enable_gc=0 ./vendor/bin/php-cs-fixer fix {} -v --dry-run --config-file=.php_cs;' || exit 1
+  - ls -d library/Magento/* tests/MagentoTest/* | parallel --gnu -P 0 'echo "Running {} CS checks"; php -d zend.enable_gc=0 ./vendor/bin/php-cs-fixer fix {} -v --dry-run --config-file=.php_cs;' || exit 1
 
 after_script:
   # Merges the individual clover reports of each component into a single clover.xml
