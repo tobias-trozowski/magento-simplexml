@@ -1,4 +1,4 @@
-<phpunit bootstrap="./bootstrap.php"
+<phpunit bootstrap="../vendor/autoload.php"
          backupGlobals="true"
          convertErrorsToExceptions="true"
          convertNoticesToExceptions="true"
@@ -13,12 +13,16 @@
          colors="false">
     <testsuites>
         <testsuite name="Magento Simplexml Test Suite">
-            <directory>./Magento</directory>
-            <exclude>./Magento/_files/</exclude>
-            <exclude>./Magento/AllTests/</exclude>
+            <directory>./MagentoTest</directory>
+            <exclude>./MagentoTest/_files/</exclude>
+            <exclude>./MagentoTest/AllTests/</exclude>
         </testsuite>
     </testsuites>
-
+    <filter>
+        <whitelist addUncoveredFilesFromWhiteList="true">
+            <directory suffix=".php">../library</directory>
+        </whitelist>
+    </filter>
     <groups>
         <exclude>
             <group>disable</group>
