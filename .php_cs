@@ -2,7 +2,8 @@
 use Symfony\CS\FixerInterface;
 
 $finder = Symfony\CS\Finder\DefaultFinder::create()
-    ->in(__DIR__ . '/library');
+    ->in(__DIR__ . '/library')
+    ->in(__DIR__ . '/tests');
 
 return Symfony\CS\Config\Config::create()
     ->finder($finder)
