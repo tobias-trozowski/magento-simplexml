@@ -1,3 +1,4 @@
+# see http://about.travis-ci.org/docs/user/languages/php/ for more hints
 language: php
 
 php:
@@ -16,7 +17,7 @@ before_script:
 
 script:
   # Run tests
-  php -d zend.enable_gc=0 ./vendor/bin/phpunit -c tests/phpunit.xml.dist --coverage-php build/coverage/coverage-{/.}.cov {};' || exit 1
+  - php -d zend.enable_gc=0 ./vendor/bin/phpunit -c tests/phpunit.xml.dist --coverage-php build/coverage/coverage-{/.}.cov {};' || exit 1
 
   # Run coding standard checks in parallel
   - ls -d library/Magento/* tests/Magento/* | parallel --gnu -P 0 'echo "Running {} CS checks"; php -d zend.enable_gc=0 ./vendor/bin/php-cs-fixer fix {} -v --dry-run --config-file=.php_cs;' || exit 1
