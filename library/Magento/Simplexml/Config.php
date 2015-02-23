@@ -40,12 +40,10 @@ class Config
      *
      * Initializes XML for this configuration
      *
-     * @todo implement caching mechanism
+     * @see  self::setXml
      *
-     * @see self::setXml
-     *
-     * @param string|Magento\Simplexml\Element $sourceData
-     * @param string                           $sourceType
+     * @param string|\Magento\Simplexml\Element $sourceData
+     * @param string                            $sourceType
      */
     public function __construct($sourceData = null)
     {
@@ -55,7 +53,7 @@ class Config
 
         if ($sourceData instanceof Element) {
             $this->setXml($sourceData);
-        } elseif (is_string($sourceData) && ! empty($sourceData)) {
+        } elseif (is_string($sourceData) && !empty($sourceData)) {
             if (strlen($sourceData) < 1000 && is_readable($sourceData)) {
                 $this->loadFile($sourceData);
             } else {
@@ -79,56 +77,6 @@ class Config
     }
 
     /**
-     * Returns node found by the $path.
-     *
-     * @see \Magento\Simplexml\Element::descend
-     *
-     * @param string $path
-     *
-     * @return boolean|\Magento\Simplexml\Element
-     */
-    public function getNode($path = null)
-    {
-        if (! $this->xml instanceof Element) {
-            return false;
-        } elseif ($path === null) {
-            return $this->xml;
-        } else {
-            return $this->xml->descend($path);
-        }
-    }
-
-    /**
-     * Returns nodes found by xpath expression.
-     *
-     * @param string $xpath
-     *
-     * @return boolean|array
-     */
-    public function getXpath($xpath)
-    {
-        if (! $this->xml instanceof Element || empty($this->xml)) {
-            return false;
-        }
-
-        if (! $result = $this->xml->xpath($xpath)) {
-            return false;
-        }
-
-        return $result;
-    }
-
-    /**
-     * Return Xml of node as string.
-     *
-     * @return string
-     */
-    public function getXmlString()
-    {
-        return $this->getNode()->asNiceXml('', false);
-    }
-
-    /**
      * Imports XML file.
      *
      * @param string $filePath
@@ -137,7 +85,7 @@ class Config
      */
     public function loadFile($filePath)
     {
-        if (! is_readable($filePath)) {
+        if (!is_readable($filePath)) {
             return false;
         }
 
@@ -145,6 +93,18 @@ class Config
         $fileData = $this->processFileData($fileData);
 
         return $this->loadString($fileData);
+    }
+
+    /**
+     * Stub method for processing file data right after loading the file text.
+     *
+     * @param string $text
+     *
+     * @return string
+     */
+    public function processFileData($text)
+    {
+        return $text;
     }
 
     /**
@@ -166,6 +126,36 @@ class Config
         }
 
         return false;
+    }
+
+    /**
+     * Return Xml of node as string.
+     *
+     * @return string
+     */
+    public function getXmlString()
+    {
+        return $this->getNode()->asNiceXml('', false);
+    }
+
+    /**
+     * Returns node found by the $path.
+     *
+     * @see \Magento\Simplexml\Element::descend
+     *
+     * @param string $path
+     *
+     * @return boolean|\Magento\Simplexml\Element
+     */
+    public function getNode($path = null)
+    {
+        if (!$this->xml instanceof Element) {
+            return false;
+        } elseif ($path === null) {
+            return $this->xml;
+        } else {
+            return $this->xml->descend($path);
+        }
     }
 
     /**
@@ -213,12 +203,12 @@ class Config
     public function applyExtends()
     {
         $targets = $this->getXpath($this->xpathExtends);
-        if (! $targets) {
+        if (!$targets) {
             return $this;
         }
 
         foreach ($targets as $target) {
-            $sources = $this->getXpath((string) $target['extends']);
+            $sources = $this->getXpath((string)$target['extends']);
 
             if ($sources) {
                 foreach ($sources as $source) {
@@ -235,15 +225,23 @@ class Config
     }
 
     /**
-     * Stub method for processing file data right after loading the file text.
+     * Returns nodes found by xpath expression.
      *
-     * @param string $text
+     * @param string $xpath
      *
-     * @return string
+     * @return boolean|array
      */
-    public function processFileData($text)
+    public function getXpath($xpath)
     {
-        return $text;
+        if (!$this->xml instanceof Element || empty($this->xml)) {
+            return false;
+        }
+
+        if (!$result = $this->xml->xpath($xpath)) {
+            return false;
+        }
+
+        return $result;
     }
 
     /**

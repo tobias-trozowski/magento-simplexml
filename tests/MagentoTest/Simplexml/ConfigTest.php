@@ -95,6 +95,8 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers ::loadString
+     * @expectedException \PHPUnit_Framework_Error
+     * @expectedExceptionMessage simplexml_load_string(): Entity: line 1: parser error : Start tag expected,
      */
     public function testLoadString()
     {
@@ -103,11 +105,6 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($config->loadString(''));
         $this->assertTrue($config->loadString($xml));
         $this->assertXmlStringEqualsXmlString($xml, $config->getXmlString());
-
-        $this->setExpectedException(
-            '\Exception',
-            'simplexml_load_string(): Entity: line 1: parser error : Start tag expected,'
-        );
         $this->assertFalse($config->loadString('wrong_path'));
     }
 
