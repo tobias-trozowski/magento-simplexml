@@ -5,7 +5,7 @@
  * See COPYING.txt for license details.
  */
 
-namespace Magento\Simplexml;
+namespace Magento\Framework\Simplexml;
 
 /**
  * Base class for simplexml based configurations.
@@ -17,7 +17,7 @@ class Config
     /**
      * Configuration xml.
      *
-     * @var \Magento\Simplexml\Element
+     * @var \Magento\Framework\Simplexml\Element
      */
     protected $xml = null;
 
@@ -26,7 +26,7 @@ class Config
      *
      * @var string
      */
-    protected $elementClass = 'Magento\Simplexml\Element';
+    protected $elementClass = 'Magento\Framework\Simplexml\Element';
 
     /**
      * Xpath describing nodes in configuration that need to be extended.
@@ -42,8 +42,8 @@ class Config
      *
      * @see  self::setXml
      *
-     * @param string|\Magento\Simplexml\Element $sourceData
-     * @param string                            $sourceType
+     * @param string|\Magento\Framework\Simplexml\Element $sourceData
+     * @param string                                      $sourceType
      */
     public function __construct($sourceData = null)
     {
@@ -65,7 +65,7 @@ class Config
     /**
      * Sets xml for this configuration.
      *
-     * @param \Magento\Simplexml\Element $node
+     * @param \Magento\Framework\Simplexml\Element $node
      *
      * @return Config
      */
@@ -141,11 +141,11 @@ class Config
     /**
      * Returns node found by the $path.
      *
-     * @see \Magento\Simplexml\Element::descend
+     * @see \Magento\Framework\Simplexml\Element::descend
      *
      * @param string $path
      *
-     * @return boolean|\Magento\Simplexml\Element
+     * @return boolean|\Magento\Framework\Simplexml\Element
      */
     public function getNode($path = null)
     {
@@ -163,7 +163,7 @@ class Config
      *
      * @param \DOMNode $dom
      *
-     * @return boolean|\Magento\Simplexml\Element
+     * @return boolean|\Magento\Framework\Simplexml\Element
      */
     public function loadDom($dom)
     {
@@ -186,7 +186,7 @@ class Config
      * @param string  $value
      * @param boolean $overwrite
      *
-     * @return \Magento\Simplexml\Config
+     * @return \Magento\Framework\Simplexml\Config
      */
     public function setNode($path, $value, $overwrite = true)
     {
@@ -198,7 +198,7 @@ class Config
     /**
      * Process configuration xml.
      *
-     * @return \Magento\Simplexml\Config
+     * @return \Magento\Framework\Simplexml\Config
      */
     public function applyExtends()
     {
@@ -250,10 +250,10 @@ class Config
      * If $overwrite is false will merge only missing nodes
      * Otherwise will overwrite existing nodes
      *
-     * @param \Magento\Simplexml\Config $config
-     * @param boolean                   $overwrite
+     * @param \Magento\Framework\Simplexml\Config $config
+     * @param boolean                             $overwrite
      *
-     * @return \Magento\Simplexml\Config
+     * @return \Magento\Framework\Simplexml\Config
      */
     public function extend(Config $config, $overwrite = true)
     {

@@ -23,21 +23,10 @@
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 
-namespace SirrusTest\Simplexml;
+namespace MagentoTest\Framework\Simplexml;
 
 /**
- * Short description for SirrusTest\Simplexml$ElementTest.
- *
- * Long description for SirrusTest\Simplexml$ElementTest
- *
- * @coversDefaultClass \Sirrus\Simplexml\Element
- *
- * @copyright Copyright (c) 2014 Sirrus Systems GmbH (http://www.sirrus-systems.de/)
- * @license   http://www.sirrus-systems.de/spf/license.html
- *
- * @version   $Id$
- *
- * @since     Class available since revision $Revision$
+ * @coversDefaultClass \Magento\Framework\Simplexml\Element
  */
 class ElementTest extends \PHPUnit_Framework_TestCase
 {
@@ -57,10 +46,8 @@ class ElementTest extends \PHPUnit_Framework_TestCase
      */
     public function testUnsetSelf($xml, $expectedXml, $child = null, $exceptionName = null, $exceptionMessage = '')
     {
-        /*
-         * @var $xml \Magento\Simplexml\Element
-         */
-        $el = simplexml_load_string($xml, 'Magento\Simplexml\Element');
+        /* @var $xml \Magento\Framework\Simplexml\Element */
+        $el = simplexml_load_string($xml, 'Magento\Framework\Simplexml\Element');
 
         $this->setExpectedException($exceptionName, $exceptionMessage);
 
@@ -80,7 +67,7 @@ class ElementTest extends \PHPUnit_Framework_TestCase
        <node testAttribute="testValue" />
 </root>
 XML;
-        $xml = simplexml_load_string($data, 'Magento\Simplexml\Element');
+        $xml = simplexml_load_string($data, 'Magento\Framework\Simplexml\Element');
         $node = $xml->xpath('/root/node')[0];
         $this->assertNotEmpty($node);
         $this->assertFalse($node->hasChildren());
@@ -93,7 +80,7 @@ XML;
        <node testAttribute="testValue" />
 </root>
 XML;
-        $xml = simplexml_load_string($data, 'Magento\Simplexml\Element');
+        $xml = simplexml_load_string($data, 'Magento\Framework\Simplexml\Element');
         $node = $xml->xpath('/root/node')[0];
         $this->assertNotEmpty($node);
         $this->assertEquals('testValue', $node->getAttribute('testAttribute'));
@@ -104,7 +91,7 @@ XML;
         $data = <<<XML
 <root><node testAttribute="testValue" /></root>
 XML;
-        $xml = simplexml_load_string($data, 'Magento\Simplexml\Element');
+        $xml = simplexml_load_string($data, 'Magento\Framework\Simplexml\Element');
         $this->assertSame([
             'node' => [
                 '@' => [
@@ -120,7 +107,7 @@ XML;
         $data = <<<XML
 <root><node testAttribute="testValue"><node_1 /></node></root>
 XML;
-        $xml = simplexml_load_string($data, 'Magento\Simplexml\Element');
+        $xml = simplexml_load_string($data, 'Magento\Framework\Simplexml\Element');
         $this->assertSame([
             'node' => [
                 'node_1' => '',
@@ -132,9 +119,9 @@ XML;
     {
         $dataFile = file_get_contents(__DIR__ . '/_files/mixed_data.xml');
         /**
-         * @var $xml \Magento\Simplexml\Element
+         * @var $xml \Magento\Framework\Simplexml\Element
          */
-        $xml = simplexml_load_string($dataFile, 'Magento\Simplexml\Element');
+        $xml = simplexml_load_string($dataFile, 'Magento\Framework\Simplexml\Element');
 
         $expected = <<<XML
 <root>
@@ -155,13 +142,14 @@ XML;
     public function testAppendChild()
     {
         /**
-         * @var $xml \Magento\Simplexml\Element
+         * @var $xml \Magento\Framework\Simplexml\Element
          */
-        $baseXml = simplexml_load_string('<root/>', 'Magento\Simplexml\Element');
+        $baseXml = simplexml_load_string('<root/>', 'Magento\Framework\Simplexml\Element');
         /**
-         * @var $xml \Magento\Simplexml\Element
+         * @var $xml \Magento\Framework\Simplexml\Element
          */
-        $appendXml = simplexml_load_string('<node_a attr="abc"><node_b>text</node_b></node_a>', 'Magento\Simplexml\Element');
+        $appendXml = simplexml_load_string('<node_a attr="abc"><node_b>text</node_b></node_a>',
+            'Magento\Framework\Simplexml\Element');
         $baseXml->appendChild($appendXml);
 
         $expectedXml = '<root><node_a attr="abc"><node_b>text</node_b></node_a></root>';
@@ -173,22 +161,22 @@ XML;
         $path = '/node1/node2';
         $value = 'value';
         /**
-         * @var $xml \Magento\Simplexml\Element
+         * @var $xml \Magento\Framework\Simplexml\Element
          */
-        $xml = simplexml_load_string('<root/>', 'Magento\Simplexml\Element');
+        $xml = simplexml_load_string('<root/>', 'Magento\Framework\Simplexml\Element');
         $this->assertEmpty($xml->xpath('/root/node1/node2'));
         $xml->setNode($path, $value);
         $this->assertNotEmpty($xml->xpath('/root/node1/node2'));
-        $this->assertEquals($value, (string) $xml->xpath('/root/node1/node2')[0]);
+        $this->assertEquals($value, (string)$xml->xpath('/root/node1/node2')[0]);
     }
 
     public function testExtend()
     {
         /**
-         * @var $xml \Magento\Simplexml\Element
+         * @var $xml \Magento\Framework\Simplexml\Element
          */
-        $xml = simplexml_load_string('<root/>', 'Magento\Simplexml\Element');
-        $xml2 = simplexml_load_string('<root><foo/><bar/><baz/></root>', 'Magento\Simplexml\Element');
+        $xml = simplexml_load_string('<root/>', 'Magento\Framework\Simplexml\Element');
+        $xml2 = simplexml_load_string('<root><foo/><bar/><baz/></root>', 'Magento\Framework\Simplexml\Element');
         $xml->extend($xml2);
         $this->assertTrue(true);
     }

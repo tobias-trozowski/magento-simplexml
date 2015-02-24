@@ -6,13 +6,13 @@
  * file that was distributed with this source code.
  */
 
-namespace Magento\Simplexml\Exception;
+namespace Magento\Framework\Simplexml\Exception;
 
 /**
- * Exception thrown if an argument is not of the expected type.
+ * Exception marker interface.
  *
  * @since Class available since revision $Revision$
  */
-class InvalidArgumentException extends \InvalidArgumentException implements ExceptionInterface
+interface ExceptionInterface
 {
 }

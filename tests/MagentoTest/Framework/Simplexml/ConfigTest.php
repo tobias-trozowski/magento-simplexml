@@ -5,16 +5,12 @@
  * See COPYING.txt for license details.
  */
 
-namespace MagentoTest\Simplexml;
+namespace MagentoTest\Framework\Simplexml;
 
-use Magento\Simplexml\Config;
+use Magento\Framework\Simplexml\Config;
 
 /**
- * Short description for MagentoTest\Simplexml$ConfigTest.
- *
- * Long description for MagentoTest\Simplexml$ConfigTest
- *
- * @coversDefaultClass \Magento\Simplexml\Config
+ * @coversDefaultClass \Magento\Framework\Simplexml\Config
  */
 class ConfigTest extends \PHPUnit_Framework_TestCase
 {
@@ -24,7 +20,10 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
         return [
             'string' => ['<?xml version="1.0"?><config><node>1</node></config>'],
             'file' => [__DIR__ . '/_files/data.xml'],
-            'element' => [simplexml_load_string('<?xml version="1.0"?><config><node>1</node></config>', 'Magento\Simplexml\Element')],
+            'element' => [
+                simplexml_load_string('<?xml version="1.0"?><config><node>1</node></config>',
+                    'Magento\Framework\Simplexml\Element'),
+            ],
             'null' => [null],
         ];
         // @formatter:on
@@ -60,7 +59,8 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetXml()
     {
-        $el = simplexml_load_string('<?xml version="1.0"?><config><node>1</node></config>', 'Magento\Simplexml\Element');
+        $el = simplexml_load_string('<?xml version="1.0"?><config><node>1</node></config>',
+            'Magento\Framework\Simplexml\Element');
         $config = new Config();
         $config->setXml($el);
         $this->assertSame($el, $config->getNode());
@@ -74,7 +74,8 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
         $config = new Config();
         $this->assertFalse($config->getNode());
 
-        $el = simplexml_load_string('<?xml version="1.0"?><config><node>1</node></config>', 'Magento\Simplexml\Element');
+        $el = simplexml_load_string('<?xml version="1.0"?><config><node>1</node></config>',
+            'Magento\Framework\Simplexml\Element');
         $config = new Config($el);
 
         $this->assertNotNull($config->getNode());
@@ -86,11 +87,12 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetNode()
     {
-        $el = simplexml_load_string('<?xml version="1.0"?><config><node>1</node></config>', 'Magento\Simplexml\Element');
+        $el = simplexml_load_string('<?xml version="1.0"?><config><node>1</node></config>',
+            'Magento\Framework\Simplexml\Element');
 
         $config = new Config($el);
         $config->setNode('node', 'foo bar');
-        $this->assertSame('foo bar', (string) $config->getNode('node'));
+        $this->assertSame('foo bar', (string)$config->getNode('node'));
     }
 
     /**
@@ -150,8 +152,16 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
     {
         // @formatter:off
         return [
-            ['<?xml version="1.0"?><a><b/><c/></a>', '<?xml version="1.0"?><a><b><foo>bar</foo></b><bar>baz</bar></a>', '<?xml version="1.0"?><a><b><foo>bar</foo></b><c/><bar>baz</bar></a>'],
-            ['<?xml version="1.0"?><a><b/><c/></a>', '<?xml version="1.0"?><a><b><foo>bar</foo></b><bar>baz</bar><c/></a>', '<?xml version="1.0"?><a><b><foo>bar</foo></b><bar>baz</bar><c/></a>'],
+            [
+                '<?xml version="1.0"?><a><b/><c/></a>',
+                '<?xml version="1.0"?><a><b><foo>bar</foo></b><bar>baz</bar></a>',
+                '<?xml version="1.0"?><a><b><foo>bar</foo></b><c/><bar>baz</bar></a>',
+            ],
+            [
+                '<?xml version="1.0"?><a><b/><c/></a>',
+                '<?xml version="1.0"?><a><b><foo>bar</foo></b><bar>baz</bar><c/></a>',
+                '<?xml version="1.0"?><a><b><foo>bar</foo></b><bar>baz</bar><c/></a>',
+            ],
         ];
         // @formatter:on
     }
@@ -178,7 +188,7 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
         $node = $config->getXpath('/a/b');
         $this->assertTrue($node !== false);
         $this->assertNotEmpty($node);
-        $this->assertInstanceOf('Magento\Simplexml\Element', $node[0]);
+        $this->assertInstanceOf('Magento\Framework\Simplexml\Element', $node[0]);
         $this->assertSame('b', $node[0]->getName());
 
         $node = $config->getXpath('/a/b/c');

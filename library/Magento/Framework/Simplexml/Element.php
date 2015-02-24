@@ -5,7 +5,7 @@
  * See COPYING.txt for license details.
  */
 
-namespace Magento\Simplexml;
+namespace Magento\Framework\Simplexml;
 
 /**
  * Extends SimpleXML to add valuable functionality to SimpleXMLElement class.
@@ -22,63 +22,19 @@ class Element extends \SimpleXMLElement
      * @todo make use of spl_object_hash to keep global array of simplexml elements
      *       to emulate complicated attributes
      *
-     * @var \Magento\Simplexml\Element
+     * @var \Magento\Framework\Simplexml\Element
      */
     protected $parentElement = null;
 
     /**
      * For future use.
      *
-     * @param \Magento\Simplexml\Element $element
+     * @param \Magento\Framework\Simplexml\Element $element
      */
     public function setParent($element)
     {
         // $this->parentElement = $element;
         return $this;
-    }
-
-    /**
-     * Returns parent node for the element.
-     *
-     * Currently using xpath
-     *
-     * @throws Exception\InvalidArgumentException
-     *
-     * @return \Magento\Simplexml\Element
-     */
-    public function getParent()
-    {
-        // if (! empty($this->parentElement))
-        // {
-        // $parent = $this->parentElement;
-        // }
-        // else
-        // {
-        $arr = $this->xpath('..');
-
-        if (! isset($arr[0])) {
-            return $this;
-        }
-
-        return $arr[0];
-    }
-
-    /**
-     * Enter description here...
-     *
-     * @return boolean
-     */
-    public function hasChildren()
-    {
-        if (! $this->children()) {
-            return false;
-        }
-        // simplexml bug: @attributes is in children() but invisible in foreach
-        foreach ($this->children() as $k => $child) {
-            return true;
-        }
-
-        return false;
     }
 
     /**
@@ -90,7 +46,7 @@ class Element extends \SimpleXMLElement
     {
         $attrs = $this->attributes();
 
-        return isset($attrs[$name]) ? (string) $attrs[$name] : null;
+        return isset($attrs[$name]) ? (string)$attrs[$name] : null;
     }
 
     /**
@@ -103,7 +59,7 @@ class Element extends \SimpleXMLElement
      * @param string $path
      *                     Example: "child/grand@attrName=attrValue/subGrand" (to make it faster without regex)
      *
-     * @return \Magento\Simplexml\Element
+     * @return \Magento\Framework\Simplexml\Element
      */
     public function descend($path)
     {
@@ -139,19 +95,19 @@ class Element extends \SimpleXMLElement
                 $attributeValue = trim($attributeValue, '"');
                 $found = false;
                 foreach ($desc->$nodeName as $subdesc) {
-                    if ((string) $subdesc[$attributeName] === $attributeValue) {
+                    if ((string)$subdesc[$attributeName] === $attributeValue) {
                         $found = true;
                         $desc = $subdesc;
                         break;
                     }
                 }
-                if (! $found) {
+                if (!$found) {
                     $desc = false;
                 }
             } else {
                 $desc = $desc->$nodeName;
             }
-            if (! $desc) {
+            if (!$desc) {
                 return false;
             }
         }
@@ -170,16 +126,6 @@ class Element extends \SimpleXMLElement
     }
 
     /**
-     * asArray() analog, but without attributes.
-     *
-     * @return array string
-     */
-    public function asCanonicalArray()
-    {
-        return $this->toArray(true);
-    }
-
-    /**
      * Returns the node and children as an array.
      *
      * @param bool $isCanonical
@@ -190,11 +136,11 @@ class Element extends \SimpleXMLElement
     protected function toArray($isCanonical = false)
     {
         $result = [];
-        if (! $isCanonical) {
+        if (!$isCanonical) {
             // add attributes
             foreach ($this->attributes() as $attributeName => $attribute) {
                 if ($attribute) {
-                    $result['@'][$attributeName] = (string) $attribute;
+                    $result['@'][$attributeName] = (string)$attribute;
                 }
             }
         }
@@ -206,14 +152,42 @@ class Element extends \SimpleXMLElement
         } else {
             if (empty($result)) {
                 // return as string, if nothing was found
-                $result = (string) $this;
+                $result = (string)$this;
             } else {
                 // value has zero key element
-                $result[0] = (string) $this;
+                $result[0] = (string)$this;
             }
         }
 
         return $result;
+    }
+
+    /**
+     * Enter description here...
+     *
+     * @return boolean
+     */
+    public function hasChildren()
+    {
+        if (!$this->children()) {
+            return false;
+        }
+        // simplexml bug: @attributes is in children() but invisible in foreach
+        foreach ($this->children() as $k => $child) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * asArray() analog, but without attributes.
+     *
+     * @return array string
+     */
+    public function asCanonicalArray()
+    {
+        return $this->toArray(true);
     }
 
     /**
@@ -240,20 +214,20 @@ class Element extends \SimpleXMLElement
         $attributes = $this->attributes();
         if ($attributes) {
             foreach ($attributes as $key => $value) {
-                $out .= ' ' . $key . '="' . str_replace('"', '\"', (string) $value) . '"';
+                $out .= ' ' . $key . '="' . str_replace('"', '\"', (string)$value) . '"';
             }
         }
 
         $attributes = $this->attributes('xsi', true);
         if ($attributes) {
             foreach ($attributes as $key => $value) {
-                $out .= ' xsi:' . $key . '="' . str_replace('"', '\"', (string) $value) . '"';
+                $out .= ' xsi:' . $key . '="' . str_replace('"', '\"', (string)$value) . '"';
             }
         }
 
         if ($this->hasChildren()) {
             $out .= '>';
-            $value = trim((string) $this);
+            $value = trim((string)$this);
             if (strlen($value)) {
                 $out .= $this->xmlentities($value);
             }
@@ -263,7 +237,7 @@ class Element extends \SimpleXMLElement
             }
             $out .= $pad . '</' . $this->getName() . '>' . $nl;
         } else {
-            $value = (string) $this;
+            $value = (string)$this;
             if (strlen($value)) {
                 $out .= '>' . $this->xmlentities($value) . '</' . $this->getName() . '>' . $nl;
             } else {
@@ -271,11 +245,35 @@ class Element extends \SimpleXMLElement
             }
         }
 
-        if ((0 === $level || false === $level) && ! empty($filename)) {
+        if ((0 === $level || false === $level) && !empty($filename)) {
             file_put_contents($filename, $out);
         }
 
         return $out;
+    }
+
+    /**
+     * Converts meaningful xml characters to xml entities.
+     *
+     * @param
+     *            string
+     *
+     * @return string
+     */
+    public function xmlentities($value = null)
+    {
+        if (is_null($value)) {
+            $value = $this;
+        }
+        $value = (string)$value;
+        /* @formatter:off */
+        $value = str_replace(
+            ['&', '"', "'", '<', '>'],
+            ['&amp;', '&quot;', '&apos;', '&lt;', '&gt;'],
+            $value
+        );
+        /* @formatter:on */
+        return $value;
     }
 
     /**
@@ -296,35 +294,11 @@ class Element extends \SimpleXMLElement
     }
 
     /**
-     * Converts meaningful xml characters to xml entities.
-     *
-     * @param
-     *            string
-     *
-     * @return string
-     */
-    public function xmlentities($value = null)
-    {
-        if (is_null($value)) {
-            $value = $this;
-        }
-        $value = (string) $value;
-        /* @formatter:off */
-        $value = str_replace(
-            ['&', '"', "'", '<', '>'],
-            ['&amp;', '&quot;', '&apos;', '&lt;', '&gt;'],
-            $value
-        );
-        /* @formatter:on */
-        return $value;
-    }
-
-    /**
      * Appends $source to current node.
      *
-     * @param \Magento\Simplexml\Element $source
+     * @param \Magento\Framework\Simplexml\Element $source
      *
-     * @return \Magento\Simplexml\Element
+     * @return \Magento\Framework\Simplexml\Element
      */
     public function appendChild($source)
     {
@@ -354,14 +328,14 @@ class Element extends \SimpleXMLElement
      * If $overwrite is false will merge only missing nodes
      * Otherwise will overwrite existing nodes
      *
-     * @param \Magento\Simplexml\Element $source
-     * @param boolean                    $overwrite
+     * @param \Magento\Framework\Simplexml\Element $source
+     * @param boolean                              $overwrite
      *
-     * @return \Magento\Simplexml\Element
+     * @return \Magento\Framework\Simplexml\Element
      */
     public function extend($source, $overwrite = false)
     {
-        if (! $source instanceof Element) {
+        if (!$source instanceof Element) {
             return $this;
         }
 
@@ -375,10 +349,10 @@ class Element extends \SimpleXMLElement
     /**
      * Extends one node.
      *
-     * @param \Magento\Simplexml\Element $source
-     * @param boolean                    $overwrite
+     * @param \Magento\Framework\Simplexml\Element $source
+     * @param boolean                              $overwrite
      *
-     * @return \Magento\Simplexml\Element
+     * @return \Magento\Framework\Simplexml\Element
      */
     public function extendChild($source, $overwrite = false)
     {
@@ -391,7 +365,7 @@ class Element extends \SimpleXMLElement
         // here we have children of our source node
         $sourceChildren = $source->children();
 
-        if (! $source->hasChildren()) {
+        if (!$source->hasChildren()) {
             // handle string node
             if (isset($this->{$sourceName})) {
                 // if target already has children return without regard
@@ -438,14 +412,14 @@ class Element extends \SimpleXMLElement
      * @param string $value
      * @param bool   $overwrite
      *
-     * @return \Magento\Simplexml\Element
+     * @return \Magento\Framework\Simplexml\Element
      */
     public function setNode($path, $value, $overwrite = true)
     {
         $arr1 = explode('/', $path);
         $arr = [];
         foreach ($arr1 as $v) {
-            if (! empty($v)) {
+            if (!empty($v)) {
                 $arr[] = $v;
             }
         }
@@ -457,7 +431,7 @@ class Element extends \SimpleXMLElement
                  * if (isset($node->$nodeName)) { if ($overwrite) { unset($node->$nodeName); } else { continue; } }
                  * $xml->addChild($nodeName, $node->xmlentities($value));
                  */
-                if (! isset($node->{$nodeName}) || $overwrite) {
+                if (!isset($node->{$nodeName}) || $overwrite) {
                     // http://bugs.php.net/bug.php?id=36795
                     // comment on [8 Feb 8:09pm UTC]
                     if (isset($node->{$nodeName}) && (version_compare(phpversion(), '5.2.6', '<') === true)) {
@@ -467,7 +441,7 @@ class Element extends \SimpleXMLElement
                     }
                 }
             } else {
-                if (! isset($node->{$nodeName})) {
+                if (!isset($node->{$nodeName})) {
                     $node = $node->addChild($nodeName);
                 } else {
                     $node = $node->{$nodeName};
@@ -489,7 +463,7 @@ class Element extends \SimpleXMLElement
         $unqField = '__unique_id';
         $this[$unqField] = $uniqueId;
         $children = $this->getParent()->xpath('*');
-        for ($i = count($children); $i > 0; $i --) {
+        for ($i = count($children); $i > 0; $i--) {
             if ($children[$i - 1][0][$unqField] == $uniqueId) {
                 unset($children[$i - 1][0]);
 
@@ -497,5 +471,31 @@ class Element extends \SimpleXMLElement
             }
         }
         unset($this[$unqField]);
+    }
+
+    /**
+     * Returns parent node for the element.
+     *
+     * Currently using xpath
+     *
+     * @throws Exception\InvalidArgumentException
+     *
+     * @return \Magento\Framework\Simplexml\Element
+     */
+    public function getParent()
+    {
+        // if (! empty($this->parentElement))
+        // {
+        // $parent = $this->parentElement;
+        // }
+        // else
+        // {
+        $arr = $this->xpath('..');
+
+        if (!isset($arr[0])) {
+            return $this;
+        }
+
+        return $arr[0];
     }
 }
