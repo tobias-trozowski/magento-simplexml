@@ -476,11 +476,9 @@ class Element extends \SimpleXMLElement
      */
     public function getParent()
     {
-        if (! empty($this->parentElement))
-        {
+        if (! empty($this->parentElement)) {
             $parent = $this->parentElement;
-        }
-        else {
+        } else {
             $arr = $this->xpath('..');
 
             // @todo: should we throw an exception here?
