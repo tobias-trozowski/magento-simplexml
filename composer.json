@@ -9,6 +9,9 @@
     ],
     "homepage": "https://github.com/tobias-trozowski/magento-simplexml",
     "license": "BSD-3-Clause",
+    "conflict": {
+        "magento/project-community-edition": "*"
+    },
     "require": {
         "php": ">=5.4",
 		"ext-simplexml": "*"
