@@ -472,8 +472,6 @@ class Element extends \SimpleXMLElement
      *
      * Currently using xpath
      *
-     * @throws Exception\InvalidArgumentException
-     *
      * @return \Magento\Framework\Simplexml\Element
      */
     public function getParent()
