@@ -1,5 +1,5 @@
 {
-    "name": "magento/simplexml",
+    "name": "tobias/magento-simplexml",
     "description": "Simplexml component from Magento2",
     "type": "library",
     "keywords": [
