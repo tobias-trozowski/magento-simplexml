@@ -245,6 +245,25 @@ class Config
     }
 
     /**
+     * Load and merge files into object.
+     *
+     * @param array $files list of xml files
+     * @param bool  $overwrite
+     *
+     * @return $this
+     */
+    public function mergeFiles(array $files = [], $overwrite = true)
+    {
+        $prototype = new self();
+        foreach ($files as $xmlFile) {
+            if ($prototype->loadFile($xmlFile)) {
+                $this->extend($prototype, $overwrite);
+            }
+        }
+        return $this;
+    }
+
+    /**
      * Extends current node with xml from $config.
      *
      * If $overwrite is false will merge only missing nodes
