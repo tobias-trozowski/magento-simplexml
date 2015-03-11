@@ -30,8 +30,10 @@ class Element extends \SimpleXMLElement
      * For future use.
      *
      * @param \Magento\Framework\Simplexml\Element $element
+     *
+     * @return $this
      */
-    public function setParent($element)
+    public function setParent(Element $element)
     {
         // $this->parentElement = $element;
         return $this;
@@ -40,13 +42,15 @@ class Element extends \SimpleXMLElement
     /**
      * Returns attribute value by attribute name.
      *
+     * @param string $name
+     *
      * @return string
      */
     public function getAttribute($name)
     {
-        $attrs = $this->attributes();
+        $attributes = $this->attributes();
 
-        return isset($attrs[$name]) ? (string)$attrs[$name] : null;
+        return isset($attributes[$name]) ? (string)$attributes[$name] : null;
     }
 
     /**
@@ -147,6 +151,7 @@ class Element extends \SimpleXMLElement
         // add children values
         if ($this->hasChildren()) {
             foreach ($this->children() as $childName => $child) {
+                /* @var Element $child */
                 $result[$childName] = $child->toArray($isCanonical);
             }
         } else {
@@ -233,6 +238,7 @@ class Element extends \SimpleXMLElement
             }
             $out .= $nl;
             foreach ($this->children() as $child) {
+                /* @var Element $child */
                 $out .= $child->asNiceXml('', is_numeric($level) ? $level + 1 : true);
             }
             $out .= $pad . '</' . $this->getName() . '>' . $nl;
@@ -287,6 +293,7 @@ class Element extends \SimpleXMLElement
     {
         $out = '';
         foreach ($this->children() as $child) {
+            /* @var Element $child */
             $out .= $child->asNiceXml($level);
         }
 
@@ -302,6 +309,7 @@ class Element extends \SimpleXMLElement
      */
     public function appendChild($source)
     {
+        /* @var Element $child */
         if ($source->children()) {
             $child = $this->addChild($source->getName());
         } else {
@@ -365,6 +373,7 @@ class Element extends \SimpleXMLElement
         // here we have children of our source node
         $sourceChildren = $source->children();
 
+        /* @var Element $targetChild */
         if (!$source->hasChildren()) {
             // handle string node
             if (isset($this->{$sourceName})) {
@@ -476,7 +485,7 @@ class Element extends \SimpleXMLElement
      */
     public function getParent()
     {
-        if (! empty($this->parentElement)) {
+        if (!empty($this->parentElement)) {
             $parent = $this->parentElement;
         } else {
             $arr = $this->xpath('..');
