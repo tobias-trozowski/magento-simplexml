@@ -5,10 +5,10 @@ php:
   - 5.4
   - 5.5
   - 5.6
+  - 7.0
   - hhvm
 
 install:
-  - sudo apt-get install parallel
   - composer install --no-interaction --prefer-source --dev
 
 before_script:
@@ -19,7 +19,7 @@ script:
   - vendor/bin/phpunit -c tests/phpunit.xml.dist
 
   # Run coding standard checks in parallel
-  - ls -d library/Magento/* tests/MagentoTest/* | parallel --gnu -P 0 'echo "Running {} CS checks"; php -d zend.enable_gc=0 ./vendor/bin/php-cs-fixer fix {} -v --dry-run --config-file=.php_cs;' || exit 1
+  - php -d zend.enable_gc=0 ./vendor/bin/php-cs-fixer fix -v --dry-run --config-file=.php_cs
 
 notifications:
   email: false
