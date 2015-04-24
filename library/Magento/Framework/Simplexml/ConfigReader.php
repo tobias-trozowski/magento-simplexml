@@ -14,7 +14,7 @@ use Zend\ModuleManager\ModuleManagerInterface;
 class ConfigReader implements EventManagerAwareInterface
 {
 
-    const EVENT_MERGE = 'merge';
+    const EVENT_MERGE = 'config.merge';
 
     /**
      * @var ModuleManagerInterface
